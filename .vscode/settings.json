@@ -1,0 +1,11 @@
+{
+    "python.pythonPath": "/Users/gavinschriver/.local/share/virtualenvs/levelup-AsEgI2SA/bin/python",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "LevelUpAPI DB",
+            "database": "db.sqlite3"
+        }
+    ]
+}

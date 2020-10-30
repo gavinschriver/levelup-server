@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'k@dg(l=ili=-bgvekb_))+tn))+5b(coe@j2-17w*k$mw9%p8b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
 
 ALLOWED_HOSTS = []
 
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'meEmework.authtoken',
+    'rest_framework.authtoken',
     'corsheaders',
     'levelupapi',
 ]
