@@ -1,0 +1,14 @@
+[
+    {
+        "model": "levelupapi.game",
+        "pk": 2,
+        "fields": {
+            "title": "Iron Dragon",
+            "maker": "Klaus Von Bismark",
+            "added_by": 1,
+            "gametype": 1,
+            "number_of_players": 4,
+            "skill_level": 7
+        }
+    }
+]

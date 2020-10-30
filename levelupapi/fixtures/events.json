@@ -1,0 +1,14 @@
+[
+    {
+        "model": "levelupapi.event",
+        "pk": 2,
+        "fields": {
+            "organizer": 1,
+            "description": "This was pretty fun when I did it online. Please don't flip the table.",
+            "location": "Midnight. Behind the box. I'll be the hyena, you'll see.",
+            "date": "2020-12-06",
+            "game": 2,
+            "time": "00:00:00"
+        }
+    }
+]
