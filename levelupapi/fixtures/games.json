@@ -3,12 +3,24 @@
         "model": "levelupapi.game",
         "pk": 2,
         "fields": {
-            "title": "Iron Dragon",
-            "maker": "Klaus Von Bismark",
+            "title": "UNO",
+            "maker": "U-KNO",
             "added_by": 1,
-            "gametype": 1,
+            "gametype": 2,
             "number_of_players": 4,
-            "skill_level": 7
+            "skill_level": 2
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 3,
+        "fields": {
+            "title": "Forest King",
+            "maker": "Look Ma I Made A Game",
+            "added_by": 1,
+            "gametype": 3,
+            "number_of_players": 10,
+            "skill_level": 10
         }
     }
 ]
