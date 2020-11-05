@@ -92,6 +92,7 @@ class Events(ViewSet):
             gamerToken = Gamer.objects.get(user=request.auth.user)
             try:
                 registration = EventGamer.objects.get(event=event, gamer=gamerToken)
+                registration.delete()
                 return Response(None, status=status.HTTP_204_NO_CONTENT)
             
             except EventGamer.DoesNotExist:
