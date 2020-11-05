@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework.utils import field_mapping
 from rest_framework.viewsets import ViewSet
-from levelupapi.models import Game, Event, Gamer
+from levelupapi.models import Game, Event, Gamer, EventGamer
 from levelupapi.views.game import GameSerializer
 
 
@@ -64,6 +64,42 @@ class Events(ViewSet):
         serializer = EventSerializer(
             events, many=True, context={'request': request})
         return Response(serializer.data)
+
+    @action(methods=['get', 'post', 'delete'], detail=True)
+    def signup(self, request, pk=None):
+        if request.method == "POST":
+            event = Event.objects.get(pk=pk)
+            gamerToken = Gamer.objects.get(user=request.auth.user)
+            try:
+                registration = EventGamer.objects.get(
+                    event=event, gamer=gamerToken)
+                return Response(
+                    {'message': 'gamer is already signed up!'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY
+                )
+            except EventGamer.DoesNotExist:
+                registration = EventGamer()
+                registration.event = event
+                registration.gamer = gamerToken
+                registration.save()
+                return Response({}, status=status.HTTP_201_CREATED)
+        elif request.method == "DELETE":
+            try:
+                event = Event.objects.get(pk=pk)
+            except Event.DoesNotExist:
+                return Response(
+                    {'message': 'event does not exist'}
+                )
+            gamerToken = Gamer.objects.get(user=request.auth.user)
+            try:
+                registration = EventGamer.objects.get(event=event, gamer=gamerToken)
+                return Response(None, status=status.HTTP_204_NO_CONTENT)
+            
+            except EventGamer.DoesNotExist:
+                return Response(
+                    {'message': 'This registration does not exist'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        return Response({}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 # defining all sub-serializers first to stop VS code from yelling at me?
 
