@@ -56,10 +56,20 @@ class Events(ViewSet):
             return Response({'message': ex.arg[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
+        gamer = Gamer.objects.get(user=request.auth.user)
         events = Event.objects.all()
-        game = self.request.query_params.get('gameId', None)
-        if game is not None:
-            events = events.filter(game__id=game)
+        for event in events:
+            event.joined = None
+            try:
+                EventGamer.objects.get(event=event, gamer=gamer)
+                event.joined = True
+            except:
+                if  EventGamer.DoesNotExist:
+                    event.joined = False
+
+        gameId = self.request.query_params.get('gameId', None)
+        if gameId is not None:
+            events = events.filter(game__id=gameId)
 
         serializer = EventSerializer(
             events, many=True, context={'request': request})
@@ -93,7 +103,7 @@ class Events(ViewSet):
             try:
                 registration = EventGamer.objects.get(event=event, gamer=gamerToken)
                 registration.delete()
-                return Response(None, status=status.HTTP_204_NO_CONTENT)
+                return Response({'message': 'deleted'}, status=status.HTTP_204_NO_CONTENT)
             
             except EventGamer.DoesNotExist:
                 return Response(
@@ -136,5 +146,5 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'game', 'organizer',
-                  'description', 'date', 'time', 'location')
+                  'description', 'date', 'time', 'location', 'joined')
         depth = 1
