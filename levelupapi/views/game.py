@@ -131,7 +131,7 @@ class Games(ViewSet):
         # That URL will retrieve all tabletop games
         game_type = self.request.query_params.get('type', None)
         if game_type is not None:
-            games = games.filter(gametype__id=game_type)
+            games = games.filter(gametype_id=game_type)
 
         serializer = GameSerializer(
             games, many=True, context={'request': request})
