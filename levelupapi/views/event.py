@@ -79,17 +79,17 @@ class Events(ViewSet):
     def signup(self, request, pk=None):
         if request.method == "POST":
             event = Event.objects.get(pk=pk)
-            gamerToken = Gamer.objects.get(user=request.auth.user)
+            gamer = Gamer.objects.get(user=request.auth.user)
             try:
                 registration = EventGamer.objects.get(
-                    event=event, gamer=gamerToken)
+                    event=event, gamer=gamer)
                 return Response(
                     {'message': 'gamer is already signed up!'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY
                 )
             except EventGamer.DoesNotExist:
                 registration = EventGamer()
                 registration.event = event
-                registration.gamer = gamerToken
+                registration.gamer = gamer
                 registration.save()
                 return Response({}, status=status.HTTP_201_CREATED)
         elif request.method == "DELETE":
@@ -99,9 +99,9 @@ class Events(ViewSet):
                 return Response(
                     {'message': 'event does not exist'}
                 )
-            gamerToken = Gamer.objects.get(user=request.auth.user)
+            gamer = Gamer.objects.get(user=request.auth.user)
             try:
-                registration = EventGamer.objects.get(event=event, gamer=gamerToken)
+                registration = EventGamer.objects.get(event=event, gamer=gamer)
                 registration.delete()
                 return Response({'message': 'deleted'}, status=status.HTTP_204_NO_CONTENT)
             
