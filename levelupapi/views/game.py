@@ -13,12 +13,6 @@ class Games(ViewSet):
     """Level up games"""
 
     def create(self, request):
-        """Handle POST operations
-
-        Returns:
-            Response -- JSON serialized game instance
-        """
-
         # Uses the token passed in the `Authorization` header
         gamer = Gamer.objects.get(user=request.auth.user)
 
@@ -68,7 +62,7 @@ class Games(ViewSet):
             # The `2` at the end of the route becomes `pk`
             game = Game.objects.get(pk=pk)
             serializer = GameSerializer(game, context={'request': request})
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as ex:
             return HttpResponseServerError(ex)
 
@@ -137,12 +131,20 @@ class Games(ViewSet):
             games, many=True, context={'request': request})
         return Response(serializer.data)
 
+
+class GameTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameType
+        fields = ('id', 'label')
+
 class GameSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for games
 
     Arguments:
         serializer type
     """
+    gametype = GameTypeSerializer(many=False)
+
     class Meta:
         model = Game
         url = serializers.HyperlinkedIdentityField(
